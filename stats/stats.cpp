@@ -12,13 +12,22 @@
 
 #include <vector>
 #include "../includes/stats.h"
+#include "../includes/constants.h"
 
+
+Stats::Stats(std::vector<PCB> &finished_vector){
+	*vec = finished_vector;
+	av_response_time = UNINITIALIZED;
+	av_turnaround_time = UNINITIALIZED;
+	av_wait_time = UNINITIALIZED;
+}
 
 //loops thru vec, prints 1 line for each process using the following format
 //Process 1 Required CPU time:2  arrived:0 started:0 finished:2
 //if there are 10 processes in vector, should print 10 lines
 void Stats::showAllProcessInfo(){
-	for(auto pcb : vec){
+	std::vector<PCB> tmp = *vec;
+	for(auto pcb : tmp){
 		printf("Process %d Required CPU time:%d  arrived:%d started:%d finished:%d", pcb.process_number, pcb.required_cpu_time, pcb.arrival_time, pcb.start_time, pcb.finish_time);      //Process 1 Required CPU time:2  arrived:0 started:0 finished:2
 	}
 }
@@ -54,10 +63,11 @@ float Stats::get_av_wait_time(){
 void Stats::calcStats(){
 	int sumOfResponseTimes = 0, sumOfTurnaroundTimes = 0, sumOfWaitTimes = 0;
 
-	for(auto pcb : vec){
+	std::vector<PCB> tmp = *vec;
+	for(auto pcb : tmp){
 		sumOfResponseTimes += (pcb.start_time - pcb.arrival_time);
 		sumOfTurnaroundTimes += (pcb.finish_time - pcb.arrival_time);
-		sumOfWaitTimes += (pcb.finish_time - pcb.arrival_time - pcb.required_CPU_time);
+		sumOfWaitTimes += (pcb.finish_time - pcb.arrival_time - pcb.required_cpu_time);
 	}
 
 	float vecSize = (float)vec->size();
