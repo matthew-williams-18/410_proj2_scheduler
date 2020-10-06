@@ -2,19 +2,20 @@
  * scheduler.cpp
  *
  *  Created on: Sep 8, 2019
- *  Last updated: Oct 3, 2020
+ *  Last updated: Oct 5, 2020
  *      Author: keith, Matt Williams
  */
 
-//TODO fill in content
 #include "../includes/scheduler.h"
 #include "../includes/PCB.h"
 
+int lastProcessSwitchTime = 0;
 
 //add a process, either a new one or one that
 //had been running on the CPU and has been preempted
 void Scheduler::add(PCB p){
 	ready_q->push(p);
+	this->sort();
 }
 
 
@@ -40,8 +41,10 @@ bool Scheduler::isEmpty(){
 //true - switch processes
 //false - do not switch
 bool Scheduler::time_to_switch_processes(int tick_count, PCB &p){
-	if (preemptive && tick_count >= time_slice){
-		return true;
+	if (preemptive){
+		bool ret = ((tick_count-lastProcessSwitchTime) >= time_slice) || !(p.remaining_cpu_time > 0);
+		if (ret){ lastProcessSwitchTime = tick_count; }
+		return ret;
 	}
 	return !(p.remaining_cpu_time > 0);
 }

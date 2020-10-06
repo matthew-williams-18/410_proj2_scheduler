@@ -16,16 +16,16 @@
 
 
 Stats::Stats(std::vector<PCB> &finished_vector){
-	*vec = finished_vector;
-	av_response_time = UNINITIALIZED;
-	av_turnaround_time = UNINITIALIZED;
-	av_wait_time = UNINITIALIZED;
+	vec = &finished_vector;
+	calcStats();
 }
 
 //loops thru vec, prints 1 line for each process using the following format
 //Process 1 Required CPU time:2  arrived:0 started:0 finished:2
 //if there are 10 processes in vector, should print 10 lines
 void Stats::showAllProcessInfo(){
+	calcStats();
+
 	std::vector<PCB> tmp = *vec;
 	for(auto pcb : tmp){
 		printf("Process %d Required CPU time:%d  arrived:%d started:%d finished:%d", pcb.process_number, pcb.required_cpu_time, pcb.arrival_time, pcb.start_time, pcb.finish_time);      //Process 1 Required CPU time:2  arrived:0 started:0 finished:2

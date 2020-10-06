@@ -22,18 +22,20 @@
 #include "../includes/tester.h"
 
 //use first or second test file
-//#define TESTFILE1
+#define TESTFILE1
 
 using namespace std;
 
 //prints out metrics associated with PCBs in finished_vector
 void print_stats(std::string info, std::vector<PCB> &finished_vector){
 	Stats myStats(finished_vector);
+//	std::cout<<"Location 2 in 410_proj2_OS\n";
 
 	cout<<endl<<info<<" ------------------------"<<endl;
 	cout<<"Average wait time 		="<<myStats.get_av_wait_time()<<endl;
 	cout<<"Average Response time 		="<<myStats.get_av_response_time()<<endl;
 	cout<<"Average Turnaround time 	="<<myStats.get_av_turnaround_time()<<endl;
+//	cout<<"Location 6 in 410_proj2_OS\n";
 	myStats.showAllProcessInfo();
 	cout<<endl;
 }
@@ -56,7 +58,9 @@ int test_simulation(std::string info, Scheduler & s, float av_wait_time,float av
 #else
 	simulate(SOURCE_FILE_2,s,finished_vector );
 #endif
+//	std::cout<<"Location 1 in 410_proj2_OS\n";
 	print_stats(info, finished_vector);
+//	std::cout<<"Location 6 in 410_proj2_OS\n";
 	return verify_stats(info,finished_vector,av_wait_time,av_response_time,av_turnaround_time);
 }
 

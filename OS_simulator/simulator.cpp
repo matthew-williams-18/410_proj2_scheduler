@@ -33,10 +33,13 @@ void simulate(const char* pSourceFile, Scheduler &s,std::vector<PCB> &finished_v
 
 	//main process handling loop
 	while(true){
+//		std::cout<<"Location 4 in simulator.cpp\n";
 
 		//get any jobs that are ready to run and add to scheduler
-		while(joblist.has_ready_jobs(tick_count))
+		while(joblist.has_ready_jobs(tick_count)){
+			std::cout<<"Location 1 in simulator.cpp\n";
 			scheduler->add(joblist.get_next_job(tick_count));
+		}
 
 		//get a copy of the current job, if nothing is running
 		//an uninitialized PCB is returned
@@ -44,9 +47,11 @@ void simulate(const char* pSourceFile, Scheduler &s,std::vector<PCB> &finished_v
 
 		//see if its time to switch
 		if (scheduler->time_to_switch_processes(tick_count, currentJob)){
+//			std::cout<<"Location 1 in simulator.cpp\n";
 
 			//if current job is valid then remove it
 			if (dispatch.isValidJobOnCPU()){
+//					std::cout<<"Location 5 in simulator.cpp\n";
 					//pull current job off CPU
 					PCB removed_job= dispatch.get_from_CPU();
 
@@ -65,6 +70,7 @@ void simulate(const char* pSourceFile, Scheduler &s,std::vector<PCB> &finished_v
 
 			//any jobs to run?
 			if(!scheduler->isEmpty()){
+//				std::cout<<"Location 2 in simulator.cpp\n";
 				//Yep, run one
 				currentJob = scheduler->getNext();
 
@@ -84,6 +90,7 @@ void simulate(const char* pSourceFile, Scheduler &s,std::vector<PCB> &finished_v
 
 		//finally run the job for 1 tick
 		if (dispatch.isValidJobOnCPU()){
+//			std::cout<<"Location 3 in simulator.cpp\n";
 			cpu.run();
 			PRINT4("Running process ",std::to_string(currentJob.process_number)," ;tick_count=",std::to_string(tick_count));
 		}
@@ -91,6 +98,8 @@ void simulate(const char* pSourceFile, Scheduler &s,std::vector<PCB> &finished_v
 			PRINT3("Current tick is ",tick_count, " Invalid CPU Job");
 
 		//increment 1 clock tick
+		std::cout<<"tick count: " + tick_count << std::endl;
+
 		tick_count++;
 	}
 }
